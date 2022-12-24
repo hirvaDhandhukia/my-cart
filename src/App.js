@@ -65,6 +65,18 @@ function App() {
     setTotalAmount(0);
   }
 
+  const removeItem = (index) => {
+    let newProductList = [...productList];
+    let newTotalAmount = totalAmount;
+    
+    newTotalAmount -= newProductList[index].quantity * newProductList[index].price;
+    newProductList.splice(index, 1);
+
+    // console.log(newProductList)
+    setProductList(newProductList);
+    setTotalAmount(newTotalAmount);
+  }
+
 
   return (
     <React.Fragment>
@@ -74,6 +86,7 @@ function App() {
           productList={productList}
           incrementQty={incrementQty}
           decrementQty={decrementQty}
+          removeItem={removeItem}
         />
       </main>
       <Footer 
