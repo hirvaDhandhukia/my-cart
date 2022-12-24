@@ -24,19 +24,45 @@ function App() {
     }
   ]
 
-  let [productList , setProductList] = useState(products)
+  let [productList , setProductList] = useState(products);
+  let [totalAmount , setTotalAmount] = useState(0);
+
 
   const incrementQty = (index) => {
     // productList ki ek copy 'newProductList' mai aa gai, with the use of the spread operator
     let newProductList = [...productList]
+    let newTotalAmount = totalAmount;
+
     newProductList[index].quantity++;
+    newTotalAmount += newProductList[index].price;
+
     setProductList(newProductList);
+    setTotalAmount(newTotalAmount);
   }
 
   const decrementQty = (index) => {
-    let newProductList = [...productList]
-    newProductList[index].quantity > 0 ? newProductList[index].quantity-- : newProductList[index].quantity=0;
+    let newProductList = [...productList];
+    let newTotalAmount = totalAmount;
+
+    // newProductList[index].quantity > 0 ? newProductList[index].quantity-- : newProductList[index].quantity=0;
+    if(newProductList[index].quantity > 0) {
+      newProductList[index].quantity--;
+      newTotalAmount -= newProductList[index].price;
+    } else {
+      newProductList[index].quantity = 0;
+    }
+
     setProductList(newProductList);
+    setTotalAmount(newTotalAmount);
+  }
+
+  const resetQuantity = () => {
+    let newProductList = [...productList];
+    newProductList.map((products) => {
+      products.quantity = 0;
+    });
+    setProductList(newProductList);
+    setTotalAmount(0);
   }
 
 
@@ -50,7 +76,10 @@ function App() {
           decrementQty={decrementQty}
         />
       </main>
-      <Footer />
+      <Footer 
+        totalAmount={totalAmount}
+        resetQuantity={resetQuantity}
+      />
     </React.Fragment>
   );
 }
